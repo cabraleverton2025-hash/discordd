@@ -1,0 +1,685 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ChatHub</title><style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #313338;
+  color: #f2f3f5;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* LOGIN */
+#loginScreen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1e1f22, #313338);
+}
+
+.login-box {
+  width: 380px;
+  background: #2b2d31;
+  padding: 35px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.login-box h1 {
+  margin-bottom: 10px;
+}
+
+.login-box p {
+  color: #b5bac1;
+  margin-bottom: 25px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  background: #1e1f22;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: white;
+  outline: none;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 6px;
+  background: #5865f2;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background: #4752c4;
+}
+
+/* APP */
+#app {
+  display: none;
+  height: 100vh;
+}
+
+/* SERVIDORES */
+.servers {
+  width: 72px;
+  background: #1e1f22;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.server {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #313338;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: .2s;
+  font-weight: bold;
+}
+
+.server:hover,
+.server.active {
+  background: #5865f2;
+  border-radius: 15px;
+}
+
+.add-server {
+  color: #23a559;
+  font-size: 25px;
+}
+
+/* CANAIS */
+.sidebar {
+  width: 240px;
+  background: #2b2d31;
+  display: flex;
+  flex-direction: column;
+}
+
+.server-header {
+  height: 55px;
+  padding: 18px;
+  border-bottom: 1px solid #1e1f22;
+  font-weight: bold;
+}
+
+.channels {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.category {
+  color: #949ba4;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 15px 8px 8px;
+}
+
+.channel {
+  padding: 9px;
+  color: #b5bac1;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 3px;
+}
+
+.channel:hover,
+.channel.active {
+  background: #404249;
+  color: white;
+}
+
+.channel::before {
+  content: "# ";
+  color: #949ba4;
+  font-size: 18px;
+}
+
+/* USUÁRIO */
+.user-panel {
+  background: #232428;
+  height: 60px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background: #5865f2;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.user-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.user-status {
+  font-size: 11px;
+  color: #23a559;
+}
+
+.logout {
+  cursor: pointer;
+  color: #b5bac1;
+  font-size: 18px;
+}
+
+/* CHAT */
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.chat-header {
+  height: 55px;
+  border-bottom: 1px solid #1e1f22;
+  padding: 16px 20px;
+  font-weight: bold;
+}
+
+.messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.message {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.message:hover {
+  background: #2e3035;
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background: #f47fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.message-author {
+  font-weight: bold;
+}
+
+.message-time {
+  color: #949ba4;
+  font-size: 11px;
+  margin-left: 8px;
+}
+
+.message-text {
+  margin-top: 4px;
+  color: #dbdee1;
+}
+
+/* ENVIAR MENSAGEM */
+.message-input-area {
+  padding: 20px;
+}
+
+.message-input {
+  background: #383a40;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.message-input input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: white;
+  padding: 8px;
+  font-size: 15px;
+}
+
+.send-button {
+  background: #5865f2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.send-button:hover {
+  background: #4752c4;
+}
+
+/* MEMBROS */
+.members {
+  width: 220px;
+  background: #2b2d31;
+  padding: 20px 10px;
+}
+
+.members-title {
+  color: #949ba4;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.member {
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.member:hover {
+  background: #404249;
+}
+
+.member-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #23a559;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CELULAR */
+@media(max-width: 800px) {
+  .members {
+    display: none;
+  }
+}
+
+@media(max-width: 600px) {
+  .servers {
+    width: 55px;
+  }
+
+  .sidebar {
+    width: 180px;
+  }
+
+  .server {
+    width: 40px;
+    height: 40px;
+  }
+}
+</style></head><body><!-- LOGIN --><div id="loginScreen">
+  <div class="login-box">
+    <h1>🚀 ChatHub</h1>
+    <p>Entre para conversar com sua comunidade</p><input
+  type="text"
+  id="username"
+  placeholder="Digite seu nome"
+  maxlength="20"
+>
+
+<button onclick="login()">Entrar</button>
+
+  </div>
+</div><!-- APLICATIVO --><div id="app">  <!-- SERVIDORES -->  <div class="servers">
+    <div class="server active">🏠</div>
+    <div class="server">🎮</div>
+    <div class="server">🎨</div>
+    <div class="server">💻</div>
+    <div class="server add-server">+</div>
+  </div>  <!-- CANAIS -->  <div class="sidebar"><div class="server-header">
+  Minha Comunidade
+</div>
+
+<div class="channels">
+
+  <div class="category">CANAIS DE TEXTO</div>
+
+  <div class="channel active" onclick="changeChannel('geral', this)">
+    geral
+  </div>
+
+  <div class="channel" onclick="changeChannel('bate-papo', this)">
+    bate-papo
+  </div>
+
+  <div class="channel" onclick="changeChannel('memes', this)">
+    memes
+  </div>
+
+  <div class="channel" onclick="changeChannel('programação', this)">
+    programação
+  </div>
+
+  <div class="category">COMUNIDADE</div>
+
+  <div class="channel" onclick="changeChannel('anúncios', this)">
+    anúncios
+  </div>
+
+</div>
+
+<div class="user-panel">
+  <div class="avatar" id="userAvatar">U</div>
+
+  <div class="user-name">
+    <strong id="displayName">Usuário</strong><br>
+    <span class="user-status">● Online</span>
+  </div>
+
+  <div class="logout" onclick="logout()" title="Sair">
+    🚪
+  </div>
+</div>
+
+  </div>  <!-- CHAT -->  <div class="chat"><div class="chat-header">
+  # <span id="channelTitle">geral</span>
+</div>
+
+<div class="messages" id="messages"></div>
+
+<div class="message-input-area">
+
+  <div class="message-input">
+
+    <input
+      type="text"
+      id="messageInput"
+      placeholder="Conversar em #geral"
+      autocomplete="off"
+    >
+
+    <button class="send-button" onclick="sendMessage()">
+      Enviar
+    </button>
+
+  </div>
+
+</div>
+
+  </div>  <!-- MEMBROS -->  <div class="members"><div class="members-title">
+  ONLINE — 3
+</div>
+
+<div class="member">
+  <div class="member-avatar">A</div>
+  Admin 👑
+</div>
+
+<div class="member">
+  <div class="member-avatar">B</div>
+  Bruno
+</div>
+
+<div class="member">
+  <div class="member-avatar" id="memberAvatar">U</div>
+  <span id="memberName">Você</span>
+</div>
+
+  </div></div><script>
+
+let currentChannel = "geral";
+let username = localStorage.getItem("chathub_username") || "";
+
+
+/* LOGIN */
+
+function login() {
+
+  const input = document.getElementById("username");
+  const name = input.value.trim();
+
+  if (name.length < 2) {
+    alert("Digite um nome com pelo menos 2 caracteres!");
+    return;
+  }
+
+  username = name;
+
+  localStorage.setItem("chathub_username", username);
+
+  showApp();
+}
+
+
+/* MOSTRAR APP */
+
+function showApp() {
+
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("app").style.display = "flex";
+
+  document.getElementById("displayName").textContent = username;
+
+  document.getElementById("userAvatar").textContent =
+    username.charAt(0).toUpperCase();
+
+  document.getElementById("memberAvatar").textContent =
+    username.charAt(0).toUpperCase();
+
+  document.getElementById("memberName").textContent =
+    username;
+
+  loadMessages();
+}
+
+
+/* LOGOUT */
+
+function logout() {
+
+  localStorage.removeItem("chathub_username");
+
+  document.getElementById("app").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+
+}
+
+
+/* TROCAR CANAL */
+
+function changeChannel(channel, element) {
+
+  currentChannel = channel;
+
+  document.querySelectorAll(".channel").forEach(c => {
+    c.classList.remove("active");
+  });
+
+  element.classList.add("active");
+
+  document.getElementById("channelTitle").textContent =
+    channel;
+
+  document.getElementById("messageInput").placeholder =
+    "Conversar em #" + channel;
+
+  loadMessages();
+
+}
+
+
+/* ENVIAR MENSAGEM */
+
+function sendMessage() {
+
+  const input = document.getElementById("messageInput");
+
+  const text = input.value.trim();
+
+  if (text === "") return;
+
+  const messages =
+    JSON.parse(localStorage.getItem("chathub_messages")) || {};
+
+  if (!messages[currentChannel]) {
+    messages[currentChannel] = [];
+  }
+
+  messages[currentChannel].push({
+
+    author: username,
+    text: text,
+    time: new Date().toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit"
+    })
+
+  });
+
+  localStorage.setItem(
+    "chathub_messages",
+    JSON.stringify(messages)
+  );
+
+  input.value = "";
+
+  loadMessages();
+
+}
+
+
+/* CARREGAR MENSAGENS */
+
+function loadMessages() {
+
+  const container =
+    document.getElementById("messages");
+
+  container.innerHTML = "";
+
+  const messages =
+    JSON.parse(localStorage.getItem("chathub_messages")) || {};
+
+  const channelMessages =
+    messages[currentChannel] || [];
+
+  if (channelMessages.length === 0) {
+
+    container.innerHTML = `
+      <div style="color:#949ba4; text-align:center; margin-top:40px;">
+        <h2>👋 Bem-vindo ao #${currentChannel}</h2>
+        <br>
+        <p>Esta é a primeira mensagem deste canal!</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  channelMessages.forEach(message => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "message";
+
+    const firstLetter =
+      message.author.charAt(0).toUpperCase();
+
+    div.innerHTML = `
+
+      <div class="message-avatar">
+        ${firstLetter}
+      </div>
+
+      <div>
+
+        <span class="message-author">
+          ${escapeHTML(message.author)}
+        </span>
+
+        <span class="message-time">
+          Hoje às ${message.time}
+        </span>
+
+        <div class="message-text">
+          ${escapeHTML(message.text)}
+        </div>
+
+      </div>
+
+    `;
+
+    container.appendChild(div);
+
+  });
+
+  container.scrollTop =
+    container.scrollHeight;
+
+}
+
+
+/* SEGURANÇA PARA TEXTO */
+
+function escapeHTML(text) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
+
+}
+
+
+/* ENTER PARA ENVIAR */
+
+document
+.getElementById("messageInput")
+.addEventListener("keydown", function(event) {
+
+  if (event.key === "Enter") {
+    sendMessage();
+  }
+
+});
+
+
+/* LOGIN AUTOMÁTICO */
+
+if (username) {
+  showApp();
+}
+
+</script></body>
+</html>
